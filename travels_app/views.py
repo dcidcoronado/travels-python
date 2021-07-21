@@ -4,22 +4,22 @@ from .models import Travel
 import bcrypt
 from login_registration_app.models import User
 
-# def travels(request, travel_id):
-#     if request.method == 'GET':
-#         all_travels = Travel.objects.all()
-#         user_travels = Travel.objects.filter(user=request.session['user']['id'])
-#         context = {
-#             'all_travels': all_travels,
-#             'user_travels': user_travels
-#         }
-#         return render(request, 'travels.html', context)
+def travels(request, travel_id):
+    if request.method == 'GET':
+        all_travels = Travel.objects.all()
+        user_travels = Travel.objects.filter(user=request.session['user']['id'])
+        context = {
+            'all_travels': all_travels,
+            'user_travels': user_travels
+        }
+        return render(request, 'travels.html', context)
 
 
-#     elif request.method == 'POST':
-#         this_user = User.objects.get(id = request.session['user']['id'])
-#         this_travel = Travel.objects.get(id = f'{travel_id}')
-#         this_user.travels.add(this_travel)
-#         return redirect ('/travels')
+    elif request.method == 'POST':
+        this_user = User.objects.get(id = request.session['user']['id'])
+        this_travel = Travel.objects.get(id = f'{travel_id}')
+        this_user.travels.add(this_travel)
+        return redirect ('/travels')
 
 
 def add(request):

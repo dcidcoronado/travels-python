@@ -6,5 +6,5 @@ urlpatterns = [
     path('add', views.add),
     path('add_plan', views.add),
     path('destination/<travel_id>', views.destination),
-    # path('add_travel/<travel_id>', views.travels)
+    path('add_travel/<travel_id>', views.travels)
 ]
