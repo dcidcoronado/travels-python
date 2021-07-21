@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %} Add Plan {% endblock %}
+
+{% block navbar %}
+    {% include "menu.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <h3>Add a Trip</h3>
+    </div>
+    <div class="row">
+        <div class="col-8 offset-1">
+            <form action="add_plan" method="POST">
+                {% csrf_token %}
+                <div class="col-4 d-inline-block mt-3">
+                    <label class="fw-bold" for="destination">Destination:</label>
+                </div>
+                <div class="col-7 d-inline-block mt-3">    
+                    <input class="form-control" type="text" name="destination" id="destination" value="{{request.session.reg_destination}}">
+                </div>
+
+                <div class="col-4 d-inline-block mt-3">
+                    <label class="fw-bold" for="description">Description:</label>
+                </div>
+                <div class="col-7 d-inline-block mt-3">    
+                    <input class="form-control" type="text" name="description" id="description" value="{{request.session.reg_description}}">
+                </div>
+
+                <div class="col-4 d-inline-block mt-3">
+                    <label class="fw-bold" for="date_from">Travel Date From:</label>
+                </div>
+                <div class="col-7 d-inline-block mt-3">    
+                    <input class="form-control" type="date" name="date_from" id="date_from">
+                </div>
+
+                <div class="col-4 d-inline-block mt-3">
+                    <label class="fw-bold" for="date_to">Travel Date To:</label>
+                </div>
+                <div class="col-7 d-inline-block mt-3">    
+                    <input class="form-control" type="date" name="date_to" id="date_from">
+                </div>
+
+
+                <div class="text-end mt-3 col-11">
+                    <button type="submit" class="btn btn-primary text-center">Add</button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+{% endblock %}

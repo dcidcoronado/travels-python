@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %} Travel Dashboard {% endblock %}
+
+{% block navbar %}
+    {% include "menu.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="row mt-5">  
+        <h4> </h4>
+        <div class="col-10 offset-1" >
+            <div>Planned By: {{planner}}</div>
+            <div>Description: {{this_travel.description}} </div>
+            <div>Travel Date From: {{this_travel.date_from}} </div>
+            <div>travel Date To: {{this_travel.date_to}}</div>
+        </div>
+    </div>
+
+    <div class="row mt-5">  
+        <h4> Other users' joining in the trip</h4>
+        <div class="col-10 offset-1" >
+            {% for guest in guests %}
+                {{guest.name}}
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %} Travel Dashboard {% endblock %}
+
+{% block navbar %}
+    {% include "menu.html" %}
+{% endblock %}
+
+{% block content %}
+    <h3>Hello, {{request.session.user.name}}!</h3>
+    <div class="row">
+        <div class="col-10">
+            <table class="table mt-4">
+                <thead>
+                    <tr>
+                        <th scope="col">Destination</th>
+                        <th scope="col">Travel Start Date</th>
+                        <th scope="col">Travel End Date</th>
+                        <th scope="col">Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for travel in user_travels %}
+                        <tr>
+                            <th>
+                                <a href="/{{travel.id}}">{{travel.destination}}</a>
+                            </th>
+                            <td>
+                                {{travel.date_from}}
+                            </td>
+                            <td>
+                                {{travel.date_to}}
+                            </td>
+                            <td>
+                                {{travel.description}}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-11">
+            <table class="table mt-5">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Destination</th>
+                        <th scope="col">Travel Start Date</th>
+                        <th scope="col">Travel End Date</th>
+                        <th scope="col">Do You Want to Join?</th>                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for travel in all_travels %}
+                    <tr>
+                        <th>
+                            {{travel.user}}
+                        </th>
+                        <td>
+                            <a href="/{{travel.id}}">{{travel.destination}}</a>
+                        </td>
+                        <td>
+                            {{travel.date_from}}
+                        </td>
+                        <td>
+                            {{travel.date_to}}
+                        </td>
+                        <td>
+                            <a action="add_travel/{{travel.id}}" method="POST">Join</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-end">
+            <a href="/travels/add" class="btn btn-primary">Add Travel Plan</a>
+        </div>
+    </div>
+{% endblock %}
