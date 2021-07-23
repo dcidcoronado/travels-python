@@ -4,22 +4,22 @@ from .models import Travel
 import bcrypt
 from login_registration_app.models import User
 
-def travels(request, travel_id):
-    if request.method == 'GET':
-        all_travels = Travel.objects.all()
-        user_travels = Travel.objects.filter(user=request.session['user']['id'])
-        context = {
-            'all_travels': all_travels,
-            'user_travels': user_travels
-        }
-        return render(request, 'travels.html', context)
+def travels(request):
+    user_travels = Travel.objects.filter(user=request.session['user']['id'])
+    other_travels = Travel.objects.exclude(user__id=request.session['user']['id'])
+    other_users = User.objects.exclude(id=request.session['user']['id'])
+    context = {
+        'other_travels': other_travels,
+        'user_travels': user_travels,
+        'other_users': other_users
+    }
+    return render(request, 'travels.html', context)
 
-
-    elif request.method == 'POST':
-        this_user = User.objects.get(id = request.session['user']['id'])
-        this_travel = Travel.objects.get(id = f'{travel_id}')
-        this_user.travels.add(this_travel)
-        return redirect ('/travels')
+def join_travel(request, travel_id):
+    this_user = User.objects.get(id = request.session['user']['id'])
+    this_travel = Travel.objects.get(id = f'{travel_id}')
+    this_user.travels.add(this_travel)
+    return redirect ('/travels')
 
 
 def add(request):
@@ -49,13 +49,14 @@ def add(request):
                 del request.session['reg_date_to']
 
             this_user = User.objects.get(id = request.session['user']['id'])
-            Travel.objects.create(
-                user = this_user,
-                destination = request.POST['destination'],
-                description = request.POST['description'],
-                date_from = request.POST['date_from'],
-                date_to = request.POST['date_to']
-            )
+            this_travel = Travel.objects.create(
+                    destination = request.POST['destination'],
+                    description = request.POST['description'],
+                    date_from = request.POST['date_from'],
+                    date_to = request.POST['date_to'],
+                    planner = this_user
+                )
+            this_user.travels.add(this_travel)
 
             messages.success(request, 'Travel succesfully created')
 
@@ -66,14 +67,12 @@ def add(request):
 def destination(request, travel_id):
     this_travel = Travel.objects.get(id = f'{travel_id}')
     travel_users = User.objects.filter(travels__id = f'{travel_id}')
-    planner = travel_users.first()
-    guests = User.objects.exclude(planner)
+    guests = User.objects.filter(travels__id = f'{travel_id}').exclude(id=this_travel.planner.id)
     context = {
         'this_travel': this_travel,
         'travel_users': travel_users,
-        'planner': planer,
         'guests': guests
     }
-    return render(request, destination.html, context)
+    return render(request, 'destination.html', context)
 
 

@@ -15,7 +15,7 @@ class UserManager(models.Manager):
             errors['name'] = "Must enter a name"
         else:
             if not NAME_REGEX.match(postData['name']):
-                errors['name'] = "Name must start with a capital letter"
+                errors['name'] = "Name must start with a capital letter and must be one word only"
             elif len(postData['name']) < 3:
                 errors['name'] = "The first name must be at least 3 characters long"
 
@@ -27,7 +27,7 @@ class UserManager(models.Manager):
             elif User.objects.filter(username=postData['username']):
                 errors['username'] = "Must be a new User"
 
-        if len(['password']) == 0:
+        if len(postData['password']) == 0:
             errors['password'] = "Must enter a password"
         else:
             if postData['password'] != postData['cpassword']:

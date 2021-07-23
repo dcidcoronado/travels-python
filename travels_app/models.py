@@ -1,11 +1,16 @@
 from django.db import models
 import re
 import datetime
-from datetime import datetime
+from datetime import datetime, date
 import bcrypt
 from login_registration_app.models import User
 
 # Create your models here.
+
+def calculate_datediff(oldest, later):
+    return oldest.year - later.year - ((oldest.month, oldest.day) < (later.month, later.day))
+
+
 class TravelManager(models.Manager):
     def basic_validator(self, postData):
         errors = {}
@@ -18,29 +23,29 @@ class TravelManager(models.Manager):
             errors['description'] = 'Please, enter a description'
 
 
+
         if len(postData['date_from']) == 0:
             errors['date_from'] = 'Please, enter a travel date from'
-        else: 
-            today = datetime.now()
-            start = datetime.strptime(postData['date_from'], '%Y-%m-%d')
         
-            sum_today = today.year + today.month + today.day
-            sum_start = start.year + start.month + start.day
+        else: 
+            today = date.today()
+            start = datetime.strptime(postData['date_from'], "%Y-%m-%d").date()
 
-            if sum_today > sum_start :
-                errors['date_from'] = 'Travel date from must be in the future'
+            
 
+            if calculate_datediff(today, start) == 0:
+                errors['date_from'] = "Travel date from must be in the future"
+        
 
         if len(postData['date_to']) == 0:
             errors['date_to'] = 'Please, enter a travel date to'
+
         else:
-            start = datetime.strptime(postData['date_from'], '%Y-%m-%d')
-            end = datetime.strptime(postData['date_to'], '%Y-%m-%d')
-            sum_start = start.year + start.month + start.day
-            sum_end = end.year + end.month + end.day
+            start = datetime.strptime(postData['date_from'], '%Y-%m-%d').date()
+            end = datetime.strptime(postData['date_to'], '%Y-%m-%d').date()
 
 
-            if sum_start > sum_end :
+            if calculate_datediff(start, end) == 0 :
                 errors['date_to'] = 'Travel date to must be later than the travel date from'
 
         return errors
@@ -48,6 +53,7 @@ class TravelManager(models.Manager):
 
 class Travel(models.Model):
     user = models.ManyToManyField(User, related_name="travels")
+    planner = models.ForeignKey(User, related_name="travel_planners", on_delete = models.CASCADE, null = True)
     destination = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
     date_from = models.DateField()

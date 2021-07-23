@@ -23,7 +23,7 @@
                     {% for travel in user_travels %}
                         <tr>
                             <th>
-                                <a href="/{{travel.id}}">{{travel.destination}}</a>
+                                <a href="/travels/destination/{{travel.id}}">{{travel.destination}}</a>
                             </th>
                             <td>
                                 {{travel.date_from}}
@@ -54,13 +54,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for travel in all_travels %}
+                    {% for travel in other_travels %}
                     <tr>
                         <th>
-                            {{travel.user}}
+                            {{travel.planner.name}}
                         </th>
+
                         <td>
-                            <a href="/{{travel.id}}">{{travel.destination}}</a>
+                            <a href="/travels/destination/{{travel.id}}">{{travel.destination}}</a>
                         </td>
                         <td>
                             {{travel.date_from}}
@@ -69,7 +70,7 @@
                             {{travel.date_to}}
                         </td>
                         <td>
-                            <a action="add_travel/{{travel.id}}" method="POST">Join</a>
+                            <a href="add_travel/{{travel.id}}" method="POST">Join</a>
                         </td>
                     </tr>
                     {% endfor %}

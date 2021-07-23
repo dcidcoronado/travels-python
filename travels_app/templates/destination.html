@@ -8,20 +8,22 @@
 
 {% block content %}
     <div class="row mt-5">  
-        <h4> </h4>
+        <h4> {{this_travel.destination}}</h4>
         <div class="col-10 offset-1" >
-            <div>Planned By: {{planner}}</div>
-            <div>Description: {{this_travel.description}} </div>
-            <div>Travel Date From: {{this_travel.date_from}} </div>
-            <div>travel Date To: {{this_travel.date_to}}</div>
+            <div>Planned By: <span class="fw-bold" >{{this_travel.planner.name}}</span></div>
+            <div>Description: <span class="fw-bold" >{{this_travel.description}}</span> </div>
+            <div>Travel Date From: <span class="fw-bold" >{{this_travel.date_from}}</span> </div>
+            <div>Travel Date To: <span class="fw-bold" >{{this_travel.date_to}}</span></div>
         </div>
     </div>
 
     <div class="row mt-5">  
         <h4> Other users' joining in the trip</h4>
-        <div class="col-10 offset-1" >
+        <div class="col-10 offset-1 mt-3" >
             {% for guest in guests %}
-                {{guest.name}}
+                <ul>
+                    <li>{{guest.name}}</li>
+                </ul>  
             {% endfor %}
         </div>
     </div>

@@ -49,8 +49,8 @@ def login(request):
 
     else:
         if 'user' in request.session:
-            messages.error(request, "You're already logged")
-            return redirect('/success')
+            messages.info(request, "You're already logged")
+            return redirect('/')
         user = User.objects.filter(username=request.POST['username'])
         logged_user = user[0]
         userlogged = {
@@ -66,7 +66,7 @@ def login(request):
 def success(request):
     if 'user' not in request.session:
         return redirect('/')
-    return render(request, 'travels.html')
+    return redirect('/travels')
 
 
 def logout(request):
